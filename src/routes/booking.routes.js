@@ -6,8 +6,9 @@ import {
   createBooking,
   deleteBooking,
 } from "../controller/booking.controller.js";
-
-bookingRouter.post("/booking", auth, role(["ADMIN"]), createBooking);
+// auth, role(["ADMIN"]),
+bookingRouter.post("/booking",  createBooking);
 bookingRouter.delete("/booking/:id", auth, role(["ADMIN"]), deleteBooking);
+
 
 export default bookingRouter;

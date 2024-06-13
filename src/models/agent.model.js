@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const AgentSchema = new Schema({
+const agentSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
   role: { type: String, enum: ["ADMIN", "REGULAR"], default: "REGULAR" },
+  bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking' }],
+  users: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 });
 
-const Agent = model("Agent", AgentSchema);
+const Agent = model("Agent", agentSchema);
 export default Agent;
