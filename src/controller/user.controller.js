@@ -2,13 +2,18 @@ import User from "../models/user.model.js";
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({ agent: req.agent.id });
+    const agentId = req.header('X-Agent-Id');
+    if (!agentId) {
+      return res.status(400).json({ error: 'X-Agent-Id header is required' });
+    }
+    const users = await User.find({ agent: agentId });
     res.status(200).json(users);
   } catch (error) {
-    console.error('Error creating booking:', error);
+    console.error('Error fetching users:', error);
     res.status(500).json({ error: 'Internal Server Error', message: error.message });
   }
 };
+
 
 export const registerUser = async (req, res) => {
   const { name, email } = req.body;

@@ -11,7 +11,7 @@ export const getAllAgents = async (req, res) => {
 };
 
 export const registerAgent = async (req, res) => {
-  const { name, email, bookings, users  } = req.body;
+  const { name, email } = req.body;
   try {
     let agent = await Agent.findOne({ email });
     if (agent) {

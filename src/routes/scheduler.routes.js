@@ -1,10 +1,9 @@
 import express from "express";
 const schedulerRouter = express.Router();
-import auth from "../middleware/auth.js";
-import role from "../middleware/role.js";
+import { getScheduler } from "../controller/scheduler.controller.js";
 
-schedulerRouter.get('/scheduler', auth, role(['REGULAR', 'ADMIN']), (req, res) => {
+schedulerRouter.get('/scheduler', (req, res) => {
   res.status(200).send('OK');
 });
-
+schedulerRouter.get('/schedulers', getScheduler) ;
 export default schedulerRouter;

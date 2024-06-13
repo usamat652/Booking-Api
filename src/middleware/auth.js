@@ -1,5 +1,4 @@
-import jwt from 'jsonwebtoken';
-import Agent from '../models/agent.model.js';
+import Agent from "../models/agent.model.js";
 
 // const auth = async (req, res, next) => {
 //   const token = req.header('X-Agent-Id');
@@ -15,13 +14,31 @@ import Agent from '../models/agent.model.js';
 //   }
 // };
 
-const auth = (req, res, next) => {
-  const agentId = req.header('X-Agent-Id');
+const auth = async (req, res, next) => {
+  const agentId = req.header("X-Agent-Id");
   if (!agentId) {
-    return res.status(400).json({ error: 'X-Agent-Id header is required' });
+    return res.status(400).json({ error: "X-Agent-Id header is required" });
   }
-  req.agentId = agentId;
-  next();
+
+  try {
+    const agent = await Agent.findById(agentId);
+    if (!agent) {
+      return res.status(404).json({ error: "Agent not found" });
+    }
+
+    if (agent.role !== "ADMIN") {
+      return res
+        .status(403)
+        .json({ error: "Access denied. Admin role required." });
+    }
+
+    req.agentId = agentId;
+    next();
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Internal Server Error", message: error.message });
+  }
 };
 
 export default auth;
