@@ -20,6 +20,5 @@ app.use("/api", bookingRouter);
 app.use("/api", schedulerRouter);
 app.use("/api", userRouter);
 
-export default app;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
